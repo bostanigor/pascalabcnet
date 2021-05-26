@@ -1,0 +1,13 @@
+//Authorization Plugin
+
+%PREFIX%=VPP_AUTHORIZATIONPLUGIN_
+NAME=Аутентификация в среде проверки
+DESCRIPTION=Аутентификация в веб-сервисе проверки выполнения задач
+FORMNAME=Аспекты
+M_BUILD=Построить аспекты
+M_COMPILE=Построить и компилировать
+SAVE=Сохранить аспекты
+SAVE_CURRENT=Сохранить текущий аспект
+CREATE_TEMPLATE=Создать шаблон
+INSERT_AUTHOR=Все аспекты этого автора
+INSERT_VERSION=Все аспекты этой версии
