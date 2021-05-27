@@ -4,8 +4,6 @@ using System.Text;
 using System.Net.Http;
 using System.IO;
 using System.Text.Json;
-using System.Text.Json.Serialization;
-using System.Runtime.Serialization.Json;
 using System.Threading.Tasks;
 
 namespace VisualPascalABCPlugins
@@ -97,34 +95,18 @@ namespace VisualPascalABCPlugins
                 email = email,
                 password = password
             };
-            
-            DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeof(AuthenticationParams));
-            MemoryStream msObj = new MemoryStream();
-            serializer.WriteObject(msObj, authParams);
-            msObj.Position = 0;
-            StreamReader sr = new StreamReader(msObj);            
-            string json = sr.ReadToEnd();
-
-            /*var json = JsonSerializer.Serialize<AuthenticationParams>(authParams);*/
-            var body = new StringContent(json, Encoding.UTF8, "application/json");
-            
-
-            var response = await httpClient.PostAsync($"{apiUrl}/api/auth", body);
-            
+            var json = JsonSerializer.Serialize(authParams);            
+            var body = new StringContent(json, Encoding.UTF8, "application/json");            
+            var response = await httpClient.PostAsync($"{apiUrl}/api/auth", body);            
 
             if (response.IsSuccessStatusCode)
-            {
-                var deserializer = new DataContractJsonSerializer(typeof(JwtTokenResponse));
+            {                
                 var content = await response.Content.ReadAsStringAsync();                
 
                 using (var ms = new MemoryStream(Encoding.Unicode.GetBytes(content)))
                 {
-                    var jwtResponse = (JwtTokenResponse)deserializer.ReadObject(ms);
-                    var jwt = jwtResponse.data.jwt;
-                    var sw = File.CreateText(@".\jwt");
-                    sw.WriteLine(jwt);
-                    sw.Close();
-                    File.WriteAllText(@".\debug.txt", $"{json} {content} {jwt} {jwtResponse.ToString()}");
+                    var jwt = JsonSerializer.Deserialize<JwtTokenResponse>(content).data.token;                    
+                    File.WriteAllText(@".\jwt", jwt);                    
                 }
             }
             else

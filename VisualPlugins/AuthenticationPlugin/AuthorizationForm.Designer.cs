@@ -41,7 +41,7 @@ namespace VisualPascalABCPlugins
             this.authorizationGroup.SuspendLayout();
             this.SuspendLayout();
             // 
-            // authorizationForm
+            // authorizationGroup
             // 
             this.authorizationGroup.Controls.Add(this.errorLabel);
             this.authorizationGroup.Controls.Add(this.logInButton);
@@ -50,7 +50,7 @@ namespace VisualPascalABCPlugins
             this.authorizationGroup.Controls.Add(this.passwordInput);
             this.authorizationGroup.Controls.Add(this.emailInput);
             this.authorizationGroup.Location = new System.Drawing.Point(13, 13);
-            this.authorizationGroup.Name = "authorizationForm";
+            this.authorizationGroup.Name = "authorizationGroup";
             this.authorizationGroup.Size = new System.Drawing.Size(362, 153);
             this.authorizationGroup.TabIndex = 0;
             // 
@@ -112,18 +112,18 @@ namespace VisualPascalABCPlugins
             this.serverStatus.AutoSize = true;
             this.serverStatus.Location = new System.Drawing.Point(12, 192);
             this.serverStatus.Name = "serverStatus";
-            this.serverStatus.Size = new System.Drawing.Size(66, 13);
+            this.serverStatus.Size = new System.Drawing.Size(45, 13);
             this.serverStatus.TabIndex = 1;
-            this.serverStatus.Text = "serverStatus";
+            this.serverStatus.Text = "Loading";
             // 
             // userInfo
             // 
             this.userInfo.AutoSize = true;
             this.userInfo.Location = new System.Drawing.Point(211, 191);
             this.userInfo.Name = "userInfo";
-            this.userInfo.Size = new System.Drawing.Size(35, 13);
+            this.userInfo.Size = new System.Drawing.Size(68, 13);
             this.userInfo.TabIndex = 2;
-            this.userInfo.Text = "label3";
+            this.userInfo.Text = "No user data";
             // 
             // AuthorizationForm
             // 

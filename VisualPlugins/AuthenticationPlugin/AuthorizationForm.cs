@@ -21,6 +21,7 @@ namespace VisualPascalABCPlugins
             plugin = parent;
             PascalABCCompiler.StringResources.SetTextForAllObjects(this, AuthorizationPlugin_VisualPascalABCPlugin.StringsPrefix);
             errorLabel.Visible = false;
+            this.Enabled = false;
         }
         public void SetConnectionStatus(bool online, string message)
         {
@@ -31,7 +32,7 @@ namespace VisualPascalABCPlugins
             }
             else
             {
-                authorizationGroup.Enabled = false;                
+                authorizationGroup.Enabled = false;
                 serverStatus.ForeColor = Color.Red;
             }
             serverStatus.Text = message;
@@ -41,8 +42,17 @@ namespace VisualPascalABCPlugins
         {
             userInfo.ForeColor = authorized ?
                 Color.Green :
-                Color.Red;            
+                Color.Red;
             userInfo.Text = message;
+        }
+
+        public void SetLoading()
+        {
+            this.Enabled = false;
+            serverStatus.ForeColor = Color.Black;
+            serverStatus.Text = "Loading";
+            userInfo.ForeColor = Color.Black;
+            userInfo.Text = "Loading";
         }
 
         public void EnableAuthForm()
