@@ -112,18 +112,18 @@ namespace VisualPascalABCPlugins
             this.serverStatus.AutoSize = true;
             this.serverStatus.Location = new System.Drawing.Point(12, 192);
             this.serverStatus.Name = "serverStatus";
-            this.serverStatus.Size = new System.Drawing.Size(45, 13);
+            this.serverStatus.Size = new System.Drawing.Size(54, 13);
             this.serverStatus.TabIndex = 1;
-            this.serverStatus.Text = "Loading";
+            this.serverStatus.Text = "Загрузка";
             // 
             // userInfo
             // 
             this.userInfo.AutoSize = true;
             this.userInfo.Location = new System.Drawing.Point(211, 191);
             this.userInfo.Name = "userInfo";
-            this.userInfo.Size = new System.Drawing.Size(68, 13);
+            this.userInfo.Size = new System.Drawing.Size(89, 13);
             this.userInfo.TabIndex = 2;
-            this.userInfo.Text = "No user data";
+            this.userInfo.Text = "Не авторизован";
             // 
             // AuthorizationForm
             // 

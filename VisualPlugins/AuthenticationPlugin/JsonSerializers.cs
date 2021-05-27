@@ -22,4 +22,15 @@ namespace VisualPascalABCPlugins
             return $"{{data: {data.ToString()}; jwt: {data.token}}}";
         }
     }
+
+    public class FetchData
+    {
+        public string email { get; set; }
+        public string first_name { get; set; }
+        public string last_name { get; set; }
+    }
+    public class FetchResponse
+    {
+        public FetchData data { get; set; }
+    }
 }

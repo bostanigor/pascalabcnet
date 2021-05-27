@@ -50,24 +50,30 @@ namespace VisualPascalABCPlugins
         {
             this.Enabled = false;
             serverStatus.ForeColor = Color.Black;
-            serverStatus.Text = "Loading";
+            serverStatus.Text = "Загрузка";
             userInfo.ForeColor = Color.Black;
-            userInfo.Text = "Loading";
+            userInfo.Text = "Загрузка";
         }
 
         public void EnableAuthForm()
         {
+            this.Enabled = true;
             authorizationGroup.Enabled = true;            
         }
-        public void DisplayError(string error)
+        public void SetError(bool error, string message = null)
         {
-            errorLabel.Text = error;
-            errorLabel.Visible = true;
+            if (error)
+            {
+                errorLabel.Text = message;
+                errorLabel.Visible = true;
+            }
+            else
+                errorLabel.Visible = false;
         }
 
         private void Form_Load(object sender, EventArgs e)
         {
-
+            plugin.FetchUserAsync();
         }
 
         private void Form_Closing(object sender, FormClosingEventArgs e)
@@ -90,7 +96,7 @@ namespace VisualPascalABCPlugins
         {
             var email = emailInput.Text;
             var password = passwordInput.Text;
-            plugin.AuthenticateUser(email, password);
+            plugin.AuthenticateUserAsync(email, password);
         }
     }
 }

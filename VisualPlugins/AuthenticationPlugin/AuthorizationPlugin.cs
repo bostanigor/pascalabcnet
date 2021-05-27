@@ -5,6 +5,7 @@ using System.Net.Http;
 using System.IO;
 using System.Text.Json;
 using System.Threading.Tasks;
+using System.Net.Http.Headers;
 
 namespace VisualPascalABCPlugins
 {
@@ -17,7 +18,7 @@ namespace VisualPascalABCPlugins
 
         private HttpClient httpClient = new HttpClient();
         private string apiUrl = null;
-        private string jwt = null;
+        private string jwt = "";
         private bool serverStatus = false;
 
         public string Name
@@ -42,13 +43,13 @@ namespace VisualPascalABCPlugins
             }
         }
         public void Execute()
-        {            
+        {
             authForm.Show();
         }
 
         public AuthorizationPlugin_VisualPascalABCPlugin(IWorkbench Workbench)
         {
-            authForm = new AuthorizationForm(this);            
+            authForm = new AuthorizationForm(this);
             this.Workbench = Workbench;
             VisualEnvironmentCompiler = Workbench.VisualEnvironmentCompiler;
             authForm.VisualEnvironmentCompiler = VisualEnvironmentCompiler;
@@ -61,21 +62,17 @@ namespace VisualPascalABCPlugins
             ToolBarItems.Add(Item);
         }
 
-        private async void Init()
+        private void Init()
         {
             authForm.Enabled = false;
             InitApiURL();
-            InitJwt();
-            PingApi().Wait();
-            if (serverStatus)
-                authForm.SetConnectionStatus(true, "Сервер онлайн");
-            else
-                authForm.SetConnectionStatus(false, "Сервер недоступен");
+            InitJwt();            
+            authForm.EnableAuthForm();            
             authForm.Enabled = true;
         }
 
         private void InitApiURL()
-        {            
+        {
             apiUrl = File.Exists(@".\AuthorizationConfig.txt") ?
                     File.ReadAllText(@".\AuthorizationConfig.txt") :
                     null;
@@ -83,51 +80,87 @@ namespace VisualPascalABCPlugins
 
         private void InitJwt()
         {
-            jwt = File.Exists(@".\jwt") ?
-                    File.ReadAllText(@".\jwt") :
-                    null;
+            var token = File.Exists(@".\jwt") ?
+                    File.ReadAllText(@".\jwt") : null;            
+            SetJwt(token);
         }
 
-        public async void AuthenticateUser(string email, string password)
-        {            
+        private void SetJwt(string token)
+        {
+            this.jwt = token;
+            httpClient.DefaultRequestHeaders.Authorization =
+                jwt != null && jwt.Length > 1 ?
+                new AuthenticationHeaderValue("Bearer", jwt) :
+                null;
+        }
+
+        public async Task AuthenticateUserAsync(string email, string password)
+        {
+            authForm.SetLoading();
             var authParams = new AuthenticationParams
             {
                 email = email,
                 password = password
             };
-            var json = JsonSerializer.Serialize(authParams);            
-            var body = new StringContent(json, Encoding.UTF8, "application/json");            
-            var response = await httpClient.PostAsync($"{apiUrl}/api/auth", body);            
+            var json = JsonSerializer.Serialize(authParams);
+            var body = new StringContent(json, Encoding.UTF8, "application/json");
+            var response = await httpClient.PostAsync($"{apiUrl}/api/auth", body);
 
             if (response.IsSuccessStatusCode)
-            {                
+            {
                 var content = await response.Content.ReadAsStringAsync();                
-
-                using (var ms = new MemoryStream(Encoding.Unicode.GetBytes(content)))
-                {
-                    var jwt = JsonSerializer.Deserialize<JwtTokenResponse>(content).data.token;                    
-                    File.WriteAllText(@".\jwt", jwt);                    
-                }
+                SetJwt(JsonSerializer.Deserialize<JwtTokenResponse>(content).data.token);                
+                File.WriteAllText(@".\jwt", jwt);                
+                authForm.SetError(false);
+                await FetchUserAsync();
             }
             else
             {
+                SetJwt(null);
                 File.Delete(@".\jwt");
-            }
+                authForm.SetError(true, "Неверные данные");
+                FetchUserAsync();
+            }            
+            authForm.EnableAuthForm();            
         }
 
-        private async Task PingApi()
+        public async Task FetchUserAsync()
         {
             try
             {
-                var response = await httpClient.GetAsync(apiUrl).ConfigureAwait(false);
-                response.EnsureSuccessStatusCode();
-                serverStatus = response.IsSuccessStatusCode;                
+                var response = await httpClient.GetAsync($"{apiUrl}/api/auth").ConfigureAwait(false);
+                if (response.IsSuccessStatusCode)
+                {
+                    var content = await response.Content.ReadAsStringAsync();
+                                        
+                    var data = JsonSerializer.Deserialize<FetchResponse>(content).data;                 
+                    authForm.SetUserInfo(true, $"{data.first_name} {data.last_name}");
+                    authForm.SetConnectionStatus(true, "Сервер онлайн");
+                }
+                else if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+                {                    
+                    authForm.SetUserInfo(false, "");
+                    authForm.SetConnectionStatus(true, "Сервер онлайн");
+                }
+                else if (response.StatusCode == System.Net.HttpStatusCode.BadRequest)
+                {
+                    SetJwt("");
+                    File.Delete(@".\jwt");
+                    authForm.SetUserInfo(false, "Не авторизован");
+                    authForm.SetConnectionStatus(true, "Сервер онлайн");
+                }
+                else
+                {             
+                    authForm.SetConnectionStatus(false, "Сервер недоступен");
+                }
             }
             catch (HttpRequestException e)
-            {
+            {                
+                File.Delete(@".\jwt");
+                authForm.SetConnectionStatus(false, "Сервер недоступен");
                 Console.WriteLine("\nException Caught!");
                 Console.WriteLine("Message :{0} ", e.Message);
-            }            
+            }
         }
     }
 }
