@@ -7,7 +7,14 @@ namespace VisualPascalABCPlugins
         public string username { get; set; }
         public string password { get; set; }
     }
-    
+
+    public class SolutionParams
+    {
+        public string name { get; set; }
+        public string status { get; set; }
+        public string code_text { get; set; }
+    }
+
     public class JwtData
     {
         public string token { get; set; }

@@ -124,6 +124,19 @@ namespace VisualPascalABCPlugins
             authForm.EnableAuthForm();            
         }
 
+        public async Task TestSolutionSubmitAsync(string taskName, string status, string codeText)
+        {            
+            var solutionParams = new SolutionParams
+            {
+                name = taskName,
+                status = status,
+                code_text = codeText
+            };
+            var json = JsonSerializer.Serialize(solutionParams);
+            var body = new StringContent(json, Encoding.UTF8, "application/json");
+            var response = await httpClient.PostAsync($"{apiUrl}/api/attempts", body);
+        }
+
         public async Task FetchUserAsync()
         {
             try

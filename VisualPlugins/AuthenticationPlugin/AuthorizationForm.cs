@@ -27,12 +27,12 @@ namespace VisualPascalABCPlugins
         {
             if (online)
             {
-                authorizationGroup.Enabled = true;
+                authPage.Enabled = true;
                 serverStatus.ForeColor = Color.Green;
             }
             else
             {
-                authorizationGroup.Enabled = false;
+                authPage.Enabled = false;
                 serverStatus.ForeColor = Color.Red;
             }
             serverStatus.Text = message;
@@ -58,7 +58,7 @@ namespace VisualPascalABCPlugins
         public void EnableAuthForm()
         {
             this.Enabled = true;
-            authorizationGroup.Enabled = true;            
+            authPage.Enabled = true;            
         }
         public void SetError(bool error, string message = null)
         {
@@ -97,6 +97,14 @@ namespace VisualPascalABCPlugins
             var username = usernameInput.Text;
             var password = passwordInput.Text;
             plugin.AuthenticateUserAsync(username, password);
+        }
+
+        private void testButton_Click(object sender, EventArgs e)
+        {
+            var name = taskInput.Text;
+            var status = statusInput.Text;
+            var codeText = codeTextInput.Text;
+            plugin.TestSolutionSubmitAsync(name, status, codeText);
         }
     }
 }
