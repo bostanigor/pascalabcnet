@@ -35,7 +35,7 @@ namespace VisualPascalABCPlugins
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.passwordInput = new System.Windows.Forms.TextBox();
-            this.emailInput = new System.Windows.Forms.TextBox();
+            this.usernameInput = new System.Windows.Forms.TextBox();
             this.serverStatus = new System.Windows.Forms.Label();
             this.userInfo = new System.Windows.Forms.Label();
             this.authorizationGroup.SuspendLayout();
@@ -48,7 +48,7 @@ namespace VisualPascalABCPlugins
             this.authorizationGroup.Controls.Add(this.label2);
             this.authorizationGroup.Controls.Add(this.label1);
             this.authorizationGroup.Controls.Add(this.passwordInput);
-            this.authorizationGroup.Controls.Add(this.emailInput);
+            this.authorizationGroup.Controls.Add(this.usernameInput);
             this.authorizationGroup.Location = new System.Drawing.Point(13, 13);
             this.authorizationGroup.Name = "authorizationGroup";
             this.authorizationGroup.Size = new System.Drawing.Size(362, 153);
@@ -70,27 +70,28 @@ namespace VisualPascalABCPlugins
             this.logInButton.Name = "logInButton";
             this.logInButton.Size = new System.Drawing.Size(148, 32);
             this.logInButton.TabIndex = 4;
-            this.logInButton.Text = "Log in";
+            this.logInButton.Text = "Войти";
             this.logInButton.UseVisualStyleBackColor = true;
             this.logInButton.Click += new System.EventHandler(this.logInButton_Click);
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(33, 57);
+            this.label2.Location = new System.Drawing.Point(41, 57);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(53, 13);
+            this.label2.Size = new System.Drawing.Size(45, 13);
             this.label2.TabIndex = 3;
-            this.label2.Text = "Password";
+            this.label2.Text = "Пароль";
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(54, 19);
+            this.label1.Location = new System.Drawing.Point(6, 10);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(32, 13);
+            this.label1.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.label1.Size = new System.Drawing.Size(80, 26);
             this.label1.TabIndex = 2;
-            this.label1.Text = "Email";
+            this.label1.Text = "Имя\r\nПользователя";
             // 
             // passwordInput
             // 
@@ -100,12 +101,12 @@ namespace VisualPascalABCPlugins
             this.passwordInput.Size = new System.Drawing.Size(254, 20);
             this.passwordInput.TabIndex = 1;
             // 
-            // emailInput
+            // usernameInput
             // 
-            this.emailInput.Location = new System.Drawing.Point(92, 16);
-            this.emailInput.Name = "emailInput";
-            this.emailInput.Size = new System.Drawing.Size(254, 20);
-            this.emailInput.TabIndex = 0;
+            this.usernameInput.Location = new System.Drawing.Point(92, 16);
+            this.usernameInput.Name = "usernameInput";
+            this.usernameInput.Size = new System.Drawing.Size(254, 20);
+            this.usernameInput.TabIndex = 0;
             // 
             // serverStatus
             // 
@@ -136,7 +137,7 @@ namespace VisualPascalABCPlugins
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "AuthorizationForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "AUTHORIZATION";
+            this.Text = "FORMNAME";
             this.TopMost = true;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form_Closing);
             this.Load += new System.EventHandler(this.Form_Load);
@@ -152,7 +153,7 @@ namespace VisualPascalABCPlugins
         #endregion
 
         private System.Windows.Forms.Panel authorizationGroup;
-        private System.Windows.Forms.TextBox emailInput;
+        private System.Windows.Forms.TextBox usernameInput;
         private System.Windows.Forms.TextBox passwordInput;
         private System.Windows.Forms.Button logInButton;
         private System.Windows.Forms.Label label2;

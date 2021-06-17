@@ -94,9 +94,9 @@ namespace VisualPascalABCPlugins
 
         private void logInButton_Click(object sender, EventArgs e)
         {
-            var email = emailInput.Text;
+            var username = usernameInput.Text;
             var password = passwordInput.Text;
-            plugin.AuthenticateUserAsync(email, password);
+            plugin.AuthenticateUserAsync(username, password);
         }
     }
 }

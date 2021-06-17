@@ -94,12 +94,12 @@ namespace VisualPascalABCPlugins
                 null;
         }
 
-        public async Task AuthenticateUserAsync(string email, string password)
+        public async Task AuthenticateUserAsync(string username, string password)
         {
             authForm.SetLoading();
             var authParams = new AuthenticationParams
             {
-                email = email,
+                username = username,
                 password = password
             };
             var json = JsonSerializer.Serialize(authParams);
